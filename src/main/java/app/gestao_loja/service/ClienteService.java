@@ -43,4 +43,28 @@ public class ClienteService {
             throw new RuntimeException("Cliente com id " + id + " não encontrado");
         }
     }
+    public Cliente findByTelefone(String telefone) throws Exception {
+        Cliente cliente = clienteRepository.findByTelefone(telefone);
+        if(cliente != null){
+            return cliente;
+        }else{
+            throw new RuntimeException("Cliente com telefone " + telefone + " não encontrado!");
+        }
+    }
+    public Cliente findByCpf(String cpf) throws Exception {
+        Cliente cliente = clienteRepository.findByCpf(cpf);
+        if(cliente != null){
+            return cliente;
+        }else{
+            throw new RuntimeException("Cliente com cpf " + cpf + " não encontrado!");
+        }
+    }
+    public List<Cliente> findAdultos() throws Exception {
+        List<Cliente> clientes = clienteRepository.findAdultos();
+        if(!clientes.isEmpty()){
+            return clientes;
+        }else{
+            throw new RuntimeException("Nenhum maior de idade encontrado!");
+        }
+    }
 }

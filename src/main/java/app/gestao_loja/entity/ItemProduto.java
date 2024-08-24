@@ -20,13 +20,13 @@ public class ItemProduto {
 
     private int quantidade;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "produto_id")
     private Produto produto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "venda_id")
-    @JsonBackReference
+   // @JsonBackReference
     private Venda venda;
 
     public Long getIdProduto() {

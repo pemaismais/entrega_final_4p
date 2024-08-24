@@ -43,4 +43,31 @@ public class ProdutoService {
             throw new RuntimeException("Produto com id " + id + " não encontrado");
         }
     }
+
+    public List<Produto> findByNomeContendo(String nome) throws Exception{
+        List<Produto> produtos = produtoRepository.findByNomeContaining(nome);
+        if(!produtos.isEmpty()){
+            return produtos;
+        }else{
+            throw new RuntimeException("Produto de nome: " + nome + " não encontrado!");
+        }
+    }
+    public List<Produto> findByValorLessThan(double valor) throws Exception{
+        List<Produto> produtos = produtoRepository.findByValorLessThan(valor);
+        if(!produtos.isEmpty()){
+            return produtos;
+        }else{
+            throw new RuntimeException("Produtos de valor abaixo de: " + valor + " não encontrados");
+        }
+    }
+
+    public List<Produto> findTopMaisCaros() throws Exception{
+        List<Produto> produtos = produtoRepository.findTopMaisCaros();
+        if(!produtos.isEmpty()){
+            return produtos;
+        }else{
+            throw new RuntimeException("Produtos não encontrados");
+        }
+    }
+
 }

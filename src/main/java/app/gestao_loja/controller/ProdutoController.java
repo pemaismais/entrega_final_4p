@@ -63,4 +63,33 @@ public class ProdutoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/getValorMenorQue/{valor}")
+    public ResponseEntity<?> getValorLessThan(@PathVariable double valor){
+        try{
+            List<Produto> response = produtoService.findByValorLessThan(valor);
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/getByNome/{nome}")
+    public ResponseEntity<?> getByNome(@PathVariable String nome){
+        try{
+            List<Produto> response = produtoService.findByNomeContendo(nome);
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/topMaisCaros")
+    public ResponseEntity<?> getTopMaisCaros(){
+        try{
+            List<Produto> response = produtoService.findTopMaisCaros();
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

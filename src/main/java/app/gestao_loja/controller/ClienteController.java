@@ -63,4 +63,33 @@ public class ClienteController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @GetMapping("/getByTelefone/{telefone}")
+    public ResponseEntity<?> getByTelefone(@PathVariable String telefone){
+        try{
+            Cliente response = clienteService.findByTelefone(telefone);
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/getByCpf/{cpf}")
+    public ResponseEntity<?> getByCpf(@PathVariable String cpf){
+        try{
+            Cliente response = clienteService.findByCpf(cpf);
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @GetMapping("/getAdultos")
+    public ResponseEntity<?> getAdultos(){
+        try{
+            List<Cliente> response = clienteService.findAdultos();
+            return ResponseEntity.ok(response);
+        }catch(Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
 }

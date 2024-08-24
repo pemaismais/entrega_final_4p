@@ -27,4 +27,8 @@ public class Pessoa {
     private String nome;
     @NotNull
     private int idade;
+
+    public Pessoa(Long id){
+        this.id = id;
+    }
 }

@@ -1,8 +1,8 @@
 package app.gestao_loja.service;
 
-import app.gestao_loja.entity.ItemProduto;
-import app.gestao_loja.entity.Produto;
-import app.gestao_loja.entity.Venda;
+import app.gestao_loja.entity.*;
+import app.gestao_loja.repository.ClienteRepository;
+import app.gestao_loja.repository.FuncionarioRepository;
 import app.gestao_loja.repository.ProdutoRepository;
 import app.gestao_loja.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,13 @@ import java.util.List;
 public class VendaService {
     @Autowired
     private VendaRepository vendaRepository;
-
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+
 
     private void calcularVenda(Venda venda) {
         double total = 0;
@@ -27,10 +31,7 @@ public class VendaService {
                         .findById(itemProduto.getIdProduto())
                         .get();
                 total += produto.getValor() * itemProduto.getQuantidade();
-            } else { // se nao for colocado id pega direto do produto
-                total += itemProduto.getValorProduto();
             }
-
         }
         venda.setValorTotal(total);
     }
@@ -42,12 +43,6 @@ public class VendaService {
                 if (!produtoRepository.existsById(itemProduto.getIdProduto()) ) {
                     throw new RuntimeException("Produto de id: " + itemProduto.getIdProduto() + " não encontrado!");
                 }
-            } else { // se nao colocar id
-                // verificar valor valido
-                if (itemProduto.getValorProduto() <= 0) {
-                    throw new RuntimeException("Valor de produto invalido!");
-                }
-
             }
             // Vinculando os Items com a Venda
             itemProduto.setVenda(venda);
@@ -77,8 +72,6 @@ public class VendaService {
         } else {
             throw new RuntimeException("Venda com id " + id + " não encontrado");
         }
-
-
     }
 
     public void delete(Long id) throws Exception {
@@ -86,6 +79,45 @@ public class VendaService {
             vendaRepository.deleteById(id);
         } else {
             throw new RuntimeException("Venda com id " + id + " não encontrado");
+        }
+    }
+
+    public List<Venda> findByFuncionario(Long id) throws Exception{
+        if(funcionarioRepository.existsById(id)){
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(id);
+            List<Venda> vendas = vendaRepository.findByFuncionario(funcionario);
+            if (!vendas.isEmpty()){
+                return vendas;
+            }else{
+                throw new RuntimeException("Funcionario com id " + id + " não tem vendas!");
+            }
+        }else{
+            throw new RuntimeException("Funcionario com id " + id + " não encontrado");
+        }
+    }
+
+    public List<Venda> findByCliente(Long id) throws Exception{
+        if(clienteRepository.existsById(id)){
+            Cliente cliente = new Cliente();
+            cliente.setId(id);
+            List<Venda> response = vendaRepository.findByCliente(cliente) ;
+            if(!response.isEmpty()){
+                return response;
+            }else{
+                throw new RuntimeException("Cliente com id " + id + " não tem compras!");
+            }
+        }else{
+            throw new RuntimeException("Cliente com id " + id + " não encontrado");
+        }
+    }
+
+    public List<Venda> findByVendaMaiorQue(double valor){
+        List<Venda> vendas = vendaRepository.findVendaMaiorQue(valor);
+        if (!vendas.isEmpty()) {
+            return vendas;
+        }else{
+            throw new RuntimeException("Nenhuma venda de valor maior que: " + valor + " encontrada!");
         }
     }
 }
