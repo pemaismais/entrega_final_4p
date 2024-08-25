@@ -72,4 +72,6 @@ public class FuncionarioService {
             throw new RuntimeException("Nenhuma venda de funcionario encontrada!");
         }
     }
+
+
 }
